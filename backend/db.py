@@ -1,16 +1,11 @@
-import os
-from supabase import create_client, Client
+USERS = [
+    {"email": "kral@burakgpt.ai", "name": "Burak"},
+    {"email": "test@test.com", "name": "Test"}
+]
 
-SUPABASE_URL = os.getenv("SUPABASE_URL")
-SUPABASE_KEY = os.getenv("SUPABASE_SERVICE_ROLE_KEY")
 
-supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
-
-# tablo referansı
-users = supabase.table("users")
-
-def init_db():
-    # Render startup sırasında çağrılır
-    if not SUPABASE_URL or not SUPABASE_KEY:
-        raise RuntimeError("Supabase env variables missing")
-    return True
+def get_user_by_email(email: str):
+    for u in USERS:
+        if u["email"] == email:
+            return u
+    return None
