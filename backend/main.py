@@ -1,7 +1,8 @@
 from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
-from auth import router as auth_router, get_user
 from pydantic import BaseModel
+from backend.auth import router as auth_router, get_user
+from backend.db import init_db
 
 app = FastAPI()
 
