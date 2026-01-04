@@ -1,40 +1,25 @@
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from jose import jwt
-from passlib.hash import bcrypt
-import os
-import time
-from backend.db import users
-from backend.email import send_2fa
+from backend.db import get_user_by_email
 
 router = APIRouter()
 security = HTTPBearer()
-SECRET = os.getenv("JWT_SECRET","secret")
 
-@router.post("/signup")
-def signup(data: dict):
-    if data["email"] in users:
-        raise HTTPException(400,"Zaten kayıtlı")
-    code = str(time.time())[-6:]
-    users[data["email"]] = {
-        "password": bcrypt.hash(data["password"]),
-        "code": code,
-        "verified": False
-    }
-    send_2fa(data["email"], code)
-    return {"ok": True}
+
+def get_user(creds: HTTPAuthorizationCredentials = Depends(security)):
+    token = creds.credentials
+    user = get_user_by_email(token)
+
+    if not user:
+        raise HTTPException(status_code=401, detail="Yetkisiz")
+
+    return user
+
 
 @router.post("/login")
-def login(data: dict):
-    u = users.get(data["email"])
-    if not u or not bcrypt.verify(data["password"], u["password"]):
-        raise HTTPException(401,"Hatalı giriş")
-    token = jwt.encode({"email":data["email"]}, SECRET)
-    return {"token": token}
+def login(email: str):
+    user = get_user_by_email(email)
+    if not user:
+        raise HTTPException(status_code=404, detail="Kullanıcı yok")
 
-def get_user(token=Depends(security)):
-    try:
-        payload = jwt.decode(token.credentials, SECRET)
-        return payload
-    except:
-        raise HTTPException(401,"Yetkisiz")
+    return {"access_token": email}
