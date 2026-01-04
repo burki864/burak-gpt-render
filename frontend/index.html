@@ -1,32 +1,62 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <title>BurakGPT</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <title>BurakGPT</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
 <header>
-    <h1>BurakGPT</h1>
-    <div class="auth-buttons">
-        <button onclick="openLogin()">Login</button>
-        <button onclick="openSignup()">Sign Up</button>
-    </div>
+  <div class="logo">BurakGPT</div>
+  <div class="actions">
+    <button id="loginBtn">Login</button>
+    <button id="signupBtn">Sign Up</button>
+  </div>
 </header>
 
-<div id="modal" class="modal hidden">
-    <div class="modal-box">
-        <h2 id="modal-title"></h2>
-        <input id="email" placeholder="Email">
-        <input id="password" type="password" placeholder="Şifre">
-        <button onclick="submitAuth()">Devam Et</button>
-        <button onclick="closeModal()">İptal</button>
-        <p id="switch"></p>
-    </div>
+<main id="chatContainer" class="hidden">
+  <div id="chatBox"></div>
+  <div class="chat-input">
+    <input id="messageInput" placeholder="Mesajını yaz..." />
+    <button onclick="sendMessage()">Gönder</button>
+  </div>
+</main>
+
+<!-- LOGIN MODAL -->
+<div id="loginModal" class="modal">
+  <div class="modal-content">
+    <h2>Giriş Yap</h2>
+
+    <input id="loginEmail" placeholder="Email" />
+    <input id="loginPassword" type="password" placeholder="Şifre" />
+
+    <button onclick="login()">Devam Et</button>
+    <button class="google" onclick="googleLogin()">Google ile Devam Et</button>
+
+    <p>Hesabın yok mu? <span onclick="openSignup()">Kayıt Ol</span></p>
+    <button class="cancel" onclick="closeModals()">İptal</button>
+  </div>
+</div>
+
+<!-- SIGNUP MODAL -->
+<div id="signupModal" class="modal">
+  <div class="modal-content">
+    <h2>Kayıt Ol</h2>
+
+    <input id="signupEmail" placeholder="Email" />
+    <input id="signupPassword" type="password" placeholder="Şifre" />
+    <input id="signupPassword2" type="password" placeholder="Şifre Tekrar" />
+
+    <button onclick="signup()">Devam Et</button>
+    <button class="google" onclick="googleLogin()">Google ile Devam Et</button>
+
+    <p>Zaten hesabın var mı? <span onclick="openLogin()">Giriş Yap</span></p>
+    <button class="cancel" onclick="closeModals()">İptal</button>
+  </div>
 </div>
 
 <script src="auth.js"></script>
+<script src="chat.js"></script>
 </body>
 </html>
-
