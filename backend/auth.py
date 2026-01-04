@@ -1,10 +1,11 @@
 from fastapi import APIRouter, HTTPException, Depends
-from fastapi.security import HTTPBearer
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from jose import jwt
 from passlib.hash import bcrypt
-import os, time
-from db import users
-from email import send_2fa
+import os
+import time
+from backend.db import users
+from backend.email import send_2fa
 
 router = APIRouter()
 security = HTTPBearer()
