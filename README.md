@@ -1,2 +1,6 @@
-# burak-gpt-render
-My first web-based AI project built with render
+# BurakGPT
+
+Professional AI Chat Platform  
+Backend: FastAPI  
+Frontend: Vanilla JS  
+Hosting: Render
